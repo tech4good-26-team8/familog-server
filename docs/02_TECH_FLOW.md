@@ -14,7 +14,7 @@
 ```
 
 - **familog-server**: 멤버·게시물 관리, DB 저장, 상태관리, 프론트에 데이터 제공, AI 서버 호출.
-- **familog-ai**: 생성 3종. `/avatar`(사진→캐릭터), `/voicepack`(목소리 등록), `/tts`(낭독).
+- **familog-ai**: 생성 4종. `/avatar`(사진→캐릭터), `/voicepack`(목소리 등록), `/tts`(낭독), `/stt`(음성→텍스트, openai-whisper 로컬).
 - 둘 다 localhost. 배포 없이 로컬 데모.
 
 **설계 3원칙**

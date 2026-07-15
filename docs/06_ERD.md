@@ -76,6 +76,8 @@ TEXT·VOICE 메시지는 최종적으로 **텍스트 + 오디오 쌍**이 되고
 | taken_date | 촬영일 | DATE | NOT NULL | 갤러리 날짜 필터 기준. KST 날짜 (미입력 시 업로드 시각의 KST 날짜) |
 | created_at | 업로드일시 | DATETIME | NOT NULL | |
 
+- 갤러리 목록(`GET /api/photos`)은 이 테이블 + 채팅 IMAGE 메시지(`message.type=IMAGE`)를 **병합**해 반환한다. 채팅 이미지는 별도 photo 행을 만들지 않고 조회 시점에 합친다 — 채팅 유래 항목은 `photoId` 음수, 위치 없음.
+
 ## 공통 규칙
 
 - DB에는 **경로/식별자만** 저장. 바이너리(PNG·WAV·JPG)는 절대 DB에 넣지 않는다 (05 §6 파일 레이아웃 참고).

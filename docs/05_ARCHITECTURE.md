@@ -14,7 +14,7 @@
    │                도메인·상태관리·저장·파일서빙        AI 생성 전담
    │                                                  ├─ CosyVoice2 (로컬, TTS/보이스팩)
    └── /files/** (정적 파일) ◀── 공유 데이터 디렉토리 ──┘  ├─ OpenAI 이미지 API (외부, 아바타)
-                                                       └─ STT 엔진 (미정, 후보 Whisper 로컬)
+                                                       └─ openai-whisper (로컬, STT)
 ```
 
 - 전부 localhost (한 대의 MacBook M2). 배포 없음.

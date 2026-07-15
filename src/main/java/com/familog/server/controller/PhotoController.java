@@ -40,7 +40,7 @@ public class PhotoController {
         return photoService.upload(uploaderId, image, location, takenDate);
     }
 
-    @Operation(summary = "갤러리 목록", description = "KST 날짜 필터(캘린더 선택). date 없으면 전체 최신순.")
+    @Operation(summary = "갤러리 목록", description = "직접 업로드 사진 + 채팅 이미지 자동 수집 병합. KST 날짜 필터(캘린더 선택), date 없으면 전체 최신순. 채팅 유래 항목은 photoId가 음수(메시지 id의 음수)이며 location 없음.")
     @GetMapping
     public List<PhotoResponse> list(@RequestParam Long groupId,
                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {

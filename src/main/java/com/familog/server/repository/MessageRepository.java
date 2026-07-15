@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.familog.server.domain.Message;
+import com.familog.server.domain.MessageType;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findByGroupIdAndIdGreaterThanOrderByIdAsc(Long groupId, Long afterId);
+
+    List<Message> findByGroupIdAndTypeOrderByCreatedAtDesc(Long groupId, MessageType type);
 
     List<Message> findByGroupIdOrderByIdAsc(Long groupId);
 

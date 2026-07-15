@@ -53,14 +53,14 @@
 | 읽음 처리 | POST | /api/messages/read | 완료 | 두 시나리오를 하나로 처리: 확대 뷰 = {readerId, senderId} → 그 멤버 것만 / 채팅 진입 = {readerId} → 전체. GET에 읽음 부작용 안 태움(폴링과 분리). 멱등 — 격자 말풍선 제거 트리거 |
 
 - TEXT·VOICE 메시지는 최종적으로 **텍스트+오디오 쌍**이 된다. 부족한 반쪽의 생성 상태가 `convertStatus`. READY 전엔 해당 필드 null → 프론트 폴백(텍스트는 그대로 표시 / 오디오는 표준 TTS). IMAGE는 변환 없이 즉시 완결.
-- 채팅 이미지를 보관함(갤러리)에 자동 수집할지, 보관함 별도 업로드로 갈지는 **팀 확정 필요** — 자동 수집이면 아래 photo 업로드 API가 없어지고 채팅 IMAGE가 곧 갤러리 소스가 된다.
+- **[확정]** 채팅 IMAGE 메시지는 갤러리에 **자동 수집**한다 — 갤러리 목록은 `photo`(직접 업로드) + 채팅 IMAGE를 병합해 반환. 별도 `POST /api/photos` 업로드도 그대로 유지(둘 다 소스). 채팅 유래 항목은 `photoId`가 음수(메시지 id의 음수), `location` 없음, `takenDate`는 메시지 작성일(KST).
 
 ### photo — 추억 기록 갤러리
 
 | 기능 | Method | Path | 상태 | 설명 |
 |---|---|---|---|---|
 | 사진 업로드 | POST | /api/photos | 완료 | uploaderId+사진 multipart(+위치 텍스트, 촬영일 선택 — 미입력 시 KST 업로드 날짜로 저장). AI 생성 없음 — 동기 처리 |
-| 갤러리 목록 | GET | /api/photos?groupId=&date=YYYY-MM-DD | 완료 | KST 날짜 필터(캘린더 선택). date 없으면 전체 최신순. 카드에 작성자·위치 표시 |
+| 갤러리 목록 | GET | /api/photos?groupId=&date=YYYY-MM-DD | 완료 | 직접 업로드 사진 + 채팅 IMAGE 자동 수집을 병합해 createdAt 최신순. KST 날짜 필터(캘린더 선택), date 없으면 전체. 카드에 작성자·위치 표시(채팅 유래는 위치 없음, photoId 음수) |
 
 ### file — 정적 파일 서빙
 
@@ -80,4 +80,4 @@
 | 아바타 생성 | POST | /avatar | 완료 | 셀카+member_id → OpenAI 이미지 API(3D memoji 프롬프트 고정) → PNG 경로 |
 | 보이스팩 등록 | POST | /voicepack | 완료 | 참조 오디오(multipart)+대사+member_id → ~/familog-data/voicepacks/{member_id}/ 저장 → `{voicepack_id: "vp_{member_id}"}` |
 | TTS 변환 | POST | /tts | 완료 | JSON `{text, voicepack_id, output_name?}` → CosyVoice2 zero-shot → `{audio_path: "messages/{name}.wav"}` (데이터 디렉토리 기준 상대경로). `TTS_ENGINE=mock`이면 macOS say 대체 |
-| STT 변환 | POST | /stt | 예정 | 음성 → 텍스트. 채팅 핵심 경로라 우선순위 상향. 엔진 후보: Whisper 로컬(무료) |
+| STT 변환 | POST | /stt | 완료 | 음성 → 텍스트. openai-whisper 로컬 추론(한국어). 서버가 음성 메시지 저장 후 백그라운드 호출 → text 채움 |
