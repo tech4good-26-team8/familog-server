@@ -76,8 +76,8 @@
 
 | 기능 | Method | Path | 상태 | 설명 |
 |---|---|---|---|---|
-| 헬스체크 | GET | /health | 예정 | 서버 뼈대 생존 확인. AI 서버 구현 1순위 |
+| 헬스체크 | GET | /health | 완료 | 서버 뼈대 생존 확인. AI 서버 구현 1순위 |
 | 아바타 생성 | POST | /avatar | 예정 | 셀카+member_id → OpenAI 이미지 API(3D memoji 프롬프트 고정) → PNG 경로 |
-| 보이스팩 등록 | POST | /voicepack | 예정 | 참조 오디오+대사+member_id 저장(CosyVoice2 zero-shot용) → voicepack_id. 트리거는 온보딩 낭독 단계 |
-| TTS 변환 | POST | /tts | 예정 | 텍스트+voicepack_id → 그 사람 목소리 오디오 경로. CosyVoice2 검증이 선행 관문 |
+| 보이스팩 등록 | POST | /voicepack | 완료 | 참조 오디오(multipart)+대사+member_id → ~/familog-data/voicepacks/{member_id}/ 저장 → `{voicepack_id: "vp_{member_id}"}` |
+| TTS 변환 | POST | /tts | 완료 | JSON `{text, voicepack_id, output_name?}` → CosyVoice2 zero-shot → `{audio_path: "messages/{name}.wav"}` (데이터 디렉토리 기준 상대경로). `TTS_ENGINE=mock`이면 macOS say 대체 |
 | STT 변환 | POST | /stt | 예정 | 음성 → 텍스트. 채팅 핵심 경로라 우선순위 상향. 엔진 후보: Whisper 로컬(무료) |
