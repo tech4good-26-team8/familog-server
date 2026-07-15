@@ -213,6 +213,13 @@
 - familog-ai: 폴더+venv 생성, fastapi/uvicorn/python-multipart/openai 설치 완료.
 - 다음: main.py 뼈대 → /avatar → CosyVoice2 낭독 검증 순.
 
+### 8-9. CosyVoice2 M2 구동 검증 완료 (★관문 통과) — 2026-07-16
+- **결과: 성공.** CosyVoice2-0.5B zero-shot 한국어 낭독이 M2 16GB에서 정상 생성됨 (Whisper 역전사로 문장 100% 일치 확인).
+- **CPU로 동작** — CosyVoice 코드가 cuda/cpu만 분기(MPS 미지원). 성능: 모델 로드 ~2분(시작 시 1회), 생성 RTF 약 23 (5.7초 오디오에 130초). 비동기+미리 생성 전략(§1, §7)으로 충분히 커버.
+- venv를 **Python 3.11**로 재구성 (기존 3.14는 torch 2.3.1 미지원). 설치 순서 함정(openai-whisper 빌드 시 torch 필요, setuptools<81)은 familog-ai/requirements.txt 주석에 기록.
+- 모델 다운로드는 ModelScope가 ~1MB/s로 너무 느려 **HuggingFace 미러(hf_transfer)** 사용 (~4.5GB, 수 분 내 완료).
+- `TTS_ENGINE=mock`(macOS say)으로 모델 없이 엔드포인트 계약만 테스트 가능 — server 팀은 mock으로 연동 개발 가능.
+
 ---
 
 ## 9. 이 문서에서 아직 안 정한 것 (진행하며 확정)
