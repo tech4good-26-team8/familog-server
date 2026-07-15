@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 import com.familog.server.domain.GenerationStatus;
 import com.familog.server.domain.Member;
 import com.familog.server.domain.Message;
-import com.familog.server.domain.MessageRead;
 import com.familog.server.domain.MessageType;
 import com.familog.server.dto.request.ReadMessagesRequest;
 import com.familog.server.dto.request.SendTextMessageRequest;
@@ -45,7 +47,7 @@ public class MessageService {
                 .text(request.text())
                 .convertStatus(GenerationStatus.PENDING)
                 .build());
-        generationService.generateMessageTts(message.getId());
+        dispatchAfterCommit(() -> generationService.generateMessageTts(message.getId()));
         return MessageResponse.from(message);
     }
 
@@ -62,7 +64,7 @@ public class MessageService {
         String ext = fileStorageService.extensionOf(audio, "wav");
         String audioPath = fileStorageService.store(audio, "messages/" + message.getId() + "." + ext);
         message.attachVoiceAudio(fileStorageService.toFileUrl(audioPath));
-        generationService.transcribeMessageVoice(message.getId(), audioPath);
+        dispatchAfterCommit(() -> generationService.transcribeMessageVoice(message.getId(), audioPath));
         return MessageResponse.from(message);
     }
 
@@ -98,24 +100,22 @@ public class MessageService {
         return messages.stream().map(MessageResponse::from).toList();
     }
 
-    /** 읽음 처리 (멱등): senderId 있으면 그 멤버 것만, 없으면 그룹 전체 */
+    /** 읽음 처리 (멱등): senderId 있으면 그 멤버 것만, 없으면 그룹 전체. INSERT IGNORE 한 방 쿼리 */
     @Transactional
     public ReadResultResponse markRead(ReadMessagesRequest request) {
         Member reader = findMember(request.readerId());
-        List<Message> unread = (request.senderId() == null)
-                ? messageRepository.findUnreadInGroup(reader.getGroup().getId(), reader.getId())
-                : messageRepository.findUnreadBySender(request.senderId(), reader.getId());
-        int count = 0;
-        for (Message message : unread) {
-            if (!messageReadRepository.existsByMessageIdAndReaderId(message.getId(), reader.getId())) {
-                messageReadRepository.save(MessageRead.builder()
-                        .message(message)
-                        .reader(reader)
-                        .build());
-                count++;
-            }
-        }
+        int count = messageReadRepository.markAllRead(reader.getGroup().getId(), reader.getId(), request.senderId());
         return new ReadResultResponse(count);
+    }
+
+    /** @Async 작업은 커밋 후 디스패치 — 커밋 전 findById로 인한 NoSuchElement 레이스 방지 */
+    private void dispatchAfterCommit(Runnable task) {
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                task.run();
+            }
+        });
     }
 
     private Member findMember(Long memberId) {
