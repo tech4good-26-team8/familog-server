@@ -27,30 +27,30 @@
 
 | 기능 | Method | Path | 상태 | 설명 |
 |---|---|---|---|---|
-| 그룹 생성 (방 만들기) | POST | /api/groups | 예정 | 그룹명으로 생성, 6자리 고유 초대코드 자동 발급. 방장(첫 가족)은 발급된 코드로 아래 가입 API를 그대로 탄다 — 가입 경로 단일화. 방 만들기 화면 필요(와이어프레임 추가 예정) |
-| 그룹 조회 | GET | /api/groups/{groupId} | 예정 | 그룹명·초대코드. "가족 코드 복사"·"초대 링크 복사" 공용 — 링크는 프론트가 코드로 딥링크 조립(별도 API 없음) |
+| 그룹 생성 (방 만들기) | POST | /api/groups | 완료 | 그룹명으로 생성, 6자리 고유 초대코드 자동 발급. 방장(첫 가족)은 발급된 코드로 아래 가입 API를 그대로 탄다 — 가입 경로 단일화. 방 만들기 화면 필요(와이어프레임 추가 예정) |
+| 그룹 조회 | GET | /api/groups/{groupId} | 완료 | 그룹명·초대코드. "가족 코드 복사"·"초대 링크 복사" 공용 — 링크는 프론트가 코드로 딥링크 조립(별도 API 없음) |
 
 ### member — 온보딩(1-1~1-5) / 메인 격자 / 프로필
 
 | 기능 | Method | Path | 상태 | 설명 |
 |---|---|---|---|---|
-| 그룹 참여 (가입) | POST | /api/members | 예정 | 이름+초대코드. 즉시 memberId 응답 → 얼굴 스캔 화면으로. 응답에 낭독 지정 문장(voiceScript) 포함. 코드 불일치 시 404 |
-| 아바타 생성 (사진 업로드) | POST | /api/members/{memberId}/avatar | 예정 | 얼굴 사진 multipart — 촬영이든 앨범 선택이든 동일 계약(실시간 얼굴 스캔 아님). 즉시 응답 후 백그라운드 생성, "3D 이미지 변환 중" 화면은 아래 폴링으로 전환. 재호출 = 프로필 "사진 다시 찍기" |
-| 보이스팩 등록 (낭독) | POST | /api/members/{memberId}/voicepack | 예정 | 온보딩 1-4-1 음성 인식 화면. 지정 문장 낭독 녹음 multipart, 즉시 응답 후 백그라운드 등록. 문장은 서버 템플릿("안녕하세요, 저는 {이름}입니다") — 가입 응답으로 내려준 것과 동일해야 함. **READY 되면 이어서 인사말 샘플 TTS 자동 생성** |
-| 멤버 단건 (폴링·생성 완료 화면) | GET | /api/members/{memberId} | 예정 | avatarStatus·voiceStatus 폴링 + 1-5 생성 완료 화면 데이터: avatarUrl(3D 캐릭터) + greetingAudioUrl(내 목소리 인사말 샘플, 생성 전 null) — 이 둘로 "본인 음성으로 이야기하는 캐릭터" 연출 |
-| 멤버 목록 (메인 격자) | GET | /api/members?groupId=&viewerId= | 예정 | 그룹 멤버 아바타+이름 + **말풍선 데이터**: viewerId 기준 멤버별 안읽은 메시지 수·최신 안읽은 메시지 미리보기(축약 텍스트·시각). 없으면 말풍선 필드 null. avatarUrl null이면 기본 캐릭터 |
-| 프로필 수정 | PATCH | /api/members/{memberId} | 예정 | 이름 변경. 사진 변경은 avatar API 재호출 |
+| 그룹 참여 (가입) | POST | /api/members | 완료 | 이름+초대코드. 즉시 memberId 응답 → 얼굴 스캔 화면으로. 응답에 낭독 지정 문장(voiceScript) 포함. 코드 불일치 시 404 |
+| 아바타 생성 (사진 업로드) | POST | /api/members/{memberId}/avatar | 완료 | 얼굴 사진 multipart — 촬영이든 앨범 선택이든 동일 계약(실시간 얼굴 스캔 아님). 즉시 응답 후 백그라운드 생성, "3D 이미지 변환 중" 화면은 아래 폴링으로 전환. 재호출 = 프로필 "사진 다시 찍기" |
+| 보이스팩 등록 (낭독) | POST | /api/members/{memberId}/voicepack | 완료 | 온보딩 1-4-1 음성 인식 화면. 지정 문장 낭독 녹음 multipart, 즉시 응답 후 백그라운드 등록. 문장은 서버 템플릿("안녕하세요, 저는 {이름}입니다") — 가입 응답으로 내려준 것과 동일해야 함. **READY 되면 이어서 인사말 샘플 TTS 자동 생성** |
+| 멤버 단건 (폴링·생성 완료 화면) | GET | /api/members/{memberId} | 완료 | avatarStatus·voiceStatus 폴링 + 1-5 생성 완료 화면 데이터: avatarUrl(3D 캐릭터) + greetingAudioUrl(내 목소리 인사말 샘플, 생성 전 null) — 이 둘로 "본인 음성으로 이야기하는 캐릭터" 연출 |
+| 멤버 목록 (메인 격자) | GET | /api/members?groupId=&viewerId= | 완료 | 그룹 멤버 아바타+이름 + **말풍선 데이터**: viewerId 기준 멤버별 안읽은 메시지 수·최신 안읽은 메시지 미리보기(축약 텍스트·시각). 없으면 말풍선 필드 null. avatarUrl null이면 기본 캐릭터 |
+| 프로필 수정 | PATCH | /api/members/{memberId} | 완료 | 이름 변경. 사진 변경은 avatar API 재호출 |
 
 ### message — 가족 채팅 (음성 ↔ 텍스트 변환이 핵심)
 
 | 기능 | Method | Path | 상태 | 설명 |
 |---|---|---|---|---|
-| 텍스트 메시지 전송 | POST | /api/messages | 예정 | senderId+text. 즉시 응답, 백그라운드 TTS(보낸이 보이스팩)로 audioUrl 생성 → 시니어는 목소리로 듣기 |
-| 음성 메시지 전송 | POST | /api/messages/voice | 예정 | senderId+녹음 multipart. 즉시 응답, 백그라운드 STT로 text 생성. 오디오는 원본 유지(재합성 안 함 — 02 §8-7) |
-| 이미지 메시지 전송 | POST | /api/messages/image | 예정 | senderId+사진 multipart. AI 변환 없음 — 동기 저장, 즉시 완결 |
-| 메시지 목록 (폴링 겸) | GET | /api/messages?groupId=&after={id} | 예정 | after 이후 메시지만 반환. 프론트가 1~2초 폴링 → 채팅 실시간성 확보 (WebSocket은 하루 범위에 과함) |
-| 멤버 확대 뷰 (안읽은 원본) | GET | /api/members/{memberId}/messages?viewerId=&unreadOnly=true | 예정 | 아바타 클릭 시: 그 멤버가 보낸 안읽은 메시지 원본(오래된 순) — 프론트가 자동 재생. unreadOnly=false면 전체 이력 |
-| 읽음 처리 | POST | /api/messages/read | 예정 | 두 시나리오를 하나로 처리: 확대 뷰 = {readerId, senderId} → 그 멤버 것만 / 채팅 진입 = {readerId} → 전체. GET에 읽음 부작용 안 태움(폴링과 분리). 멱등 — 격자 말풍선 제거 트리거 |
+| 텍스트 메시지 전송 | POST | /api/messages | 완료 | senderId+text. 즉시 응답, 백그라운드 TTS(보낸이 보이스팩)로 audioUrl 생성 → 시니어는 목소리로 듣기 |
+| 음성 메시지 전송 | POST | /api/messages/voice | 완료 | senderId+녹음 multipart. 즉시 응답, 백그라운드 STT로 text 생성. 오디오는 원본 유지(재합성 안 함 — 02 §8-7) |
+| 이미지 메시지 전송 | POST | /api/messages/image | 완료 | senderId+사진 multipart. AI 변환 없음 — 동기 저장, 즉시 완결 |
+| 메시지 목록 (폴링 겸) | GET | /api/messages?groupId=&after={id} | 완료 | after 이후 메시지만 반환. 프론트가 1~2초 폴링 → 채팅 실시간성 확보 (WebSocket은 하루 범위에 과함) |
+| 멤버 확대 뷰 (안읽은 원본) | GET | /api/members/{memberId}/messages?viewerId=&unreadOnly=true | 완료 | 아바타 클릭 시: 그 멤버가 보낸 안읽은 메시지 원본(오래된 순) — 프론트가 자동 재생. unreadOnly=false면 전체 이력 |
+| 읽음 처리 | POST | /api/messages/read | 완료 | 두 시나리오를 하나로 처리: 확대 뷰 = {readerId, senderId} → 그 멤버 것만 / 채팅 진입 = {readerId} → 전체. GET에 읽음 부작용 안 태움(폴링과 분리). 멱등 — 격자 말풍선 제거 트리거 |
 
 - TEXT·VOICE 메시지는 최종적으로 **텍스트+오디오 쌍**이 된다. 부족한 반쪽의 생성 상태가 `convertStatus`. READY 전엔 해당 필드 null → 프론트 폴백(텍스트는 그대로 표시 / 오디오는 표준 TTS). IMAGE는 변환 없이 즉시 완결.
 - 채팅 이미지를 보관함(갤러리)에 자동 수집할지, 보관함 별도 업로드로 갈지는 **팀 확정 필요** — 자동 수집이면 아래 photo 업로드 API가 없어지고 채팅 IMAGE가 곧 갤러리 소스가 된다.
@@ -59,14 +59,14 @@
 
 | 기능 | Method | Path | 상태 | 설명 |
 |---|---|---|---|---|
-| 사진 업로드 | POST | /api/photos | 예정 | uploaderId+사진 multipart(+위치 텍스트, 촬영일 선택 — 미입력 시 KST 업로드 날짜로 저장). AI 생성 없음 — 동기 처리 |
-| 갤러리 목록 | GET | /api/photos?groupId=&date=YYYY-MM-DD | 예정 | KST 날짜 필터(캘린더 선택). date 없으면 전체 최신순. 카드에 작성자·위치 표시 |
+| 사진 업로드 | POST | /api/photos | 완료 | uploaderId+사진 multipart(+위치 텍스트, 촬영일 선택 — 미입력 시 KST 업로드 날짜로 저장). AI 생성 없음 — 동기 처리 |
+| 갤러리 목록 | GET | /api/photos?groupId=&date=YYYY-MM-DD | 완료 | KST 날짜 필터(캘린더 선택). date 없으면 전체 최신순. 카드에 작성자·위치 표시 |
 
 ### file — 정적 파일 서빙
 
 | 기능 | Method | Path | 상태 | 설명 |
 |---|---|---|---|---|
-| 파일 서빙 | GET | /files/** | 예정 | 아바타 PNG·메시지 WAV·갤러리 사진. DB엔 경로만 저장, 실파일은 파일시스템 |
+| 파일 서빙 | GET | /files/** | 완료 | 아바타 PNG·메시지 WAV·갤러리 사진. DB엔 경로만 저장, 실파일은 파일시스템 |
 
 ---
 
