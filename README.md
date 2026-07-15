@@ -74,24 +74,7 @@
 
 ## 시스템 아키텍처
 
-```mermaid
-flowchart LR
-    FE["프론트엔드<br/>React 19 · Vite · Tailwind<br/>(Vercel, :5173)"]
-    BE["familog-server<br/>Java 17 · Spring Boot<br/>도메인·상태·저장 (:8080)"]
-    AI["familog-ai<br/>Python 3.11 · FastAPI<br/>AI 생성 공장 (:8000)"]
-    DB[("MySQL")]
-    FS[("~/familog-data<br/>정적 파일 공유")]
-
-    FE -- "REST /api" --> BE
-    BE -- "HTTP (내부)" --> AI
-    BE --- DB
-    BE --- FS
-    AI --- FS
-
-    AI -.-> CV["CosyVoice2-0.5B<br/>TTS · 보이스 클로닝"]
-    AI -.-> WH["Whisper<br/>한국어 STT"]
-    AI -.-> OA["OpenAI 이미지 API<br/>3D 아바타"]
-```
+<img src="docs/images/architecture.png" width="800" alt="시스템 아키텍처" />
 
 **설계 포인트**
 
