@@ -24,6 +24,7 @@
 | 구분 | URL |
 |------|-----|
 | 서비스 (프론트) | https://fe-gamma-pink.vercel.app |
+| 시연 영상 | <!-- TODO: 시연 영상 링크 --> |
 | API 서버 | https://34-64-132-201.sslip.io |
 | API 문서 (Swagger) | https://34-64-132-201.sslip.io/swagger-ui/index.html |
 
@@ -74,11 +75,9 @@
 
 ## 데모 화면
 
-<!-- TODO: 데모 캡처 이미지를 docs/images/ 에 넣고 경로를 맞춰주세요 -->
-
 | 온보딩 · 아바타 생성 | 홈 (아바타 그리드) | 채팅 · 음성 낭독 | 갤러리 |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/images/demo_onboarding.png" width="180" /> | <img src="docs/images/demo_home.png" width="180" /> | <img src="docs/images/demo_chat.png" width="180" /> | <img src="docs/images/demo_gallery.png" width="180" /> |
+| <img src="docs/images/온보딩_아바타_생성1.png" width="180" />&nbsp;<img src="docs/images/온보딩_아바타_생성2.png" width="180" /> | <img src="docs/images/홈.png" width="180" /> | <img src="docs/images/온보딩_채팅음성낭독.png" width="180" /> | <img src="docs/images/갤러리.png" width="180" /> |
 
 ---
 
