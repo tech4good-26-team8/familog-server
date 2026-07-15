@@ -1,10 +1,13 @@
 package com.familog.server.client;
 
+import java.net.http.HttpClient;
+import java.time.Duration;
 import java.util.Map;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -25,7 +28,14 @@ public class RealAiClient implements AiClient {
     private final FileStorageService fileStorageService;
 
     public RealAiClient(FamilogProperties properties, FileStorageService fileStorageService) {
-        this.restClient = RestClient.builder().baseUrl(properties.aiBaseUrl()).build();
+        // ai 서버가 멈춰도 워커가 무한 대기하지 않도록 타임아웃 필수 (초과 시 FAILED 전이)
+        JdkClientHttpRequestFactory requestFactory = new JdkClientHttpRequestFactory(
+                HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build());
+        requestFactory.setReadTimeout(Duration.ofSeconds(180));
+        this.restClient = RestClient.builder()
+                .baseUrl(properties.aiBaseUrl())
+                .requestFactory(requestFactory)
+                .build();
         this.fileStorageService = fileStorageService;
     }
 
