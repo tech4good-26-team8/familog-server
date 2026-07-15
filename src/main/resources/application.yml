@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: familog-server
+
+  # DB (KST 고정 - 04 컨벤션 §3)
+  datasource:
+    url: jdbc:mysql://localhost:3306/familog?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: ${DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  jackson:
+    time-zone: Asia/Seoul
+
+  # 파일 업로드 (사진·녹음)
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 30MB
+
+# familog 설정 (05 아키텍처)
+familog:
+  ai-base-url: http://localhost:8000
+  data-dir: ${user.home}/familog-data
+  ai-mock: true
+  voice-script-template: 안녕하세요, 저는 %s입니다
+  greeting-template: 안녕! 나 %s야. 우리 이제 자주 이야기하자!
