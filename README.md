@@ -77,7 +77,7 @@
 
 | 온보딩 · 아바타 생성 | 홈 (아바타 그리드) | 채팅 · 음성 낭독 | 갤러리 |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/images/온보딩_아바타_생성1.png" width="180" />&nbsp;<img src="docs/images/온보딩_아바타_생성2.png" width="180" /> | <img src="docs/images/홈.png" width="180" /> | <img src="docs/images/온보딩_채팅음성낭독.png" width="180" /> | <img src="docs/images/갤러리.png" width="180" /> |
+| <img src="docs/images/온보딩_아바타_생성1.png" width="88" />&nbsp;<img src="docs/images/온보딩_아바타_생성2.png" width="88" /> | <img src="docs/images/홈.png" width="180" /> | <img src="docs/images/온보딩_채팅음성낭독.png" width="180" /> | <img src="docs/images/갤러리.png" width="180" /> |
 
 ---
 
