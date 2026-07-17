@@ -24,7 +24,7 @@
 | 구분 | URL |
 |------|-----|
 | 서비스 (프론트) | https://fe-gamma-pink.vercel.app |
-| 시연 영상 | <!-- TODO: 시연 영상 링크 --> |
+| 시연 영상 | https://youtube.com/shorts/lhksi0LHLUI |
 | API 서버 | https://34-64-132-201.sslip.io |
 | API 문서 (Swagger) | https://34-64-132-201.sslip.io/swagger-ui/index.html |
 
